@@ -15,6 +15,7 @@ jobs:
   development:
     name: 🚀 Development
     uses: ./.github/workflows/_deploy.yaml
+    secrets: 'inherit'
     with:
       environment: dev
       dry_run: false
@@ -22,6 +23,7 @@ jobs:
   staging:
     name: 🚀 Staging
     uses: ./.github/workflows/_deploy.yaml
+    secrets: 'inherit'
     needs: development
     with:
       environment: stg
@@ -30,6 +32,7 @@ jobs:
   production:
     name: 🚀 Production
     uses: ./.github/workflows/_deploy.yaml
+    secrets: 'inherit'
     needs:
       - development
       - staging
