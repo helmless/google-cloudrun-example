@@ -49,14 +49,15 @@ jobs:
         shell: bash
         run: |
           # Extract service name from deployment output
-          workloads=$(echo '${{ steps.deploy.outputs.workloads }}' | jq -r '.[]')
+          workloads=$(echo '${{ steps.deploy.outputs.workloads }}' | jq -c '.[]')
           for workload in $workloads; do
-            SERVICE_NAME=$(echo $workload | jq -r '.name')
+            TYPE=$(echo $workload | jq -r '.type')
+            NAME=$(echo $workload | jq -r '.name')
             REGION=$(echo $workload | jq -r '.region')
             PROJECT=$(echo $workload | jq -r '.project')
 
-            echo "Deleting service: $SERVICE_NAME in region: $REGION"
-            gcloud run services delete $SERVICE_NAME \
+            echo "Deleting ${TYPE}: $NAME in region: $REGION"
+            gcloud run ${TYPE}s delete $NAME \
               --project=$PROJECT \
               --region=$REGION \
               --quiet
