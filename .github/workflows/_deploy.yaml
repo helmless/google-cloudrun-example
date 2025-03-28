@@ -61,3 +61,4 @@ jobs:
               --project=$PROJECT \
               --region=$REGION \
               --quiet
+          done
