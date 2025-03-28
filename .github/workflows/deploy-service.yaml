@@ -1,0 +1,38 @@
+name: 🚀 Deploy Helmless Example
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'helmless-chart/**'
+
+jobs:
+  development:
+    name: 🚀 Development
+    uses: ./.github/workflows/_deploy.yaml
+    with:
+      environment: dev
+      dry_run: false
+
+  staging:
+    name: 🚀 Staging
+    uses: ./.github/workflows/_deploy.yaml
+    needs: development
+    with:
+      environment: stg
+      dry_run: false
+
+  production:
+    name: 🚀 Production
+    uses: ./.github/workflows/_deploy.yaml
+    needs:
+      - development
+      - staging
+    with:
+      environment: prd
+      dry_run: false

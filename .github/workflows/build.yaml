@@ -1,0 +1,30 @@
+name: 📦 Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Dockerfile'
+
+jobs:
+  build:
+    name: 📦 Build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 📦 Build
+        uses: docker/build-push-action@v4
+        id: build
+        with:
+          context: .
+          file: Dockerfile
+          push: false
+
+      - name: 📝 Update Image Tag
+        shell: bash
+        run: |
+          IMAGE_TAG=$(echo ${{ steps.build.outputs.digest }} | cut -d: -f2)
+          yq eval -i 'service.image.tag = strenv(IMAGE_TAG)' helmless-chart/values.yaml
+          yq eval -i 'job.image.tag = strenv(IMAGE_TAG)' helmless-chart/values.yaml

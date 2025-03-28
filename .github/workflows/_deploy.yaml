@@ -1,0 +1,62 @@
+name: 🚀 Deploy Helmless Example
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: dev
+      dry_run:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: deploy-${{ inputs.environment }}
+      cancel-in-progress: false
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔑 Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_POOL }}
+
+      - name: 🚀 Deploy Service
+        uses: helmless/google-cloudrun-action@v1
+        id: deploy
+        with:
+          dry_run: ${{ inputs.dry_run }}
+          chart: helmless-chart
+          files: |
+            helmless-chart/values.yaml
+            helmless-chart/values.${{ inputs.environment }}.yaml
+
+      - name: 💣 Cleanup Service
+        if: always()
+        shell: bash
+        run: |
+          # Extract service name from deployment output
+          workloads=$(echo '${{ steps.deploy.outputs.workloads }}' | jq -r '.[]')
+          for workload in $workloads; do
+            SERVICE_NAME=$(echo $workload | jq -r '.name')
+            REGION=$(echo $workload | jq -r '.region')
+            PROJECT=$(echo $workload | jq -r '.project')
+
+            echo "Deleting service: $SERVICE_NAME in region: $REGION"
+            gcloud run services delete $SERVICE_NAME \
+              --project=$PROJECT \
+              --region=$REGION \
+              --quiet

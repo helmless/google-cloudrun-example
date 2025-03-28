@@ -1,0 +1,10 @@
+service:
+  name: my-service-dev
+  image:
+    tag: "latest"
+  env:
+    COLOR: "green"
+job:
+  name: my-job-dev
+  image:
+    tag: "latest"

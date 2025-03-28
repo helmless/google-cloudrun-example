@@ -1,4 +1,0 @@
-service:
-  name: my-service-dev
-job:
-  name: my-job-dev

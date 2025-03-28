@@ -1,4 +1,4 @@
-global: 
+global:
   project: helmless
   region: europe-west1
 
@@ -7,12 +7,20 @@ env: &env
 
 service:
   name: my-service
+  image:
+    name: "hello"
+    repository: "us-docker.pkg.dev/cloudrun/container"
+    tag: "latest"
   env:
     <<: *env 
     SERVICE_VAR: "Helmless is awesome!"
 
 job:
   name: my-job
+  image:
+    name: "hello-job"
+    repository: "us-docker.pkg.dev/cloudrun/container"
+    tag: "latest"
   env:
     <<: *env
     COLOR: "red"
