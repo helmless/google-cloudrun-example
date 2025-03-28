@@ -25,6 +25,7 @@ jobs:
       - name: 📝 Update Image Tag
         shell: bash
         run: |
-          IMAGE_TAG=$(echo ${{ steps.build.outputs.digest }} | cut -d: -f2)
-          yq eval -i 'service.image.tag = strenv(IMAGE_TAG)' helmless-chart/values.yaml
-          yq eval -i 'job.image.tag = strenv(IMAGE_TAG)' helmless-chart/values.yaml
+          IMAGE_TAG="latest" # this is for demo purposes, in a real scenario this should be the digest of the built image
+          # IMAGE_TAG=$(echo ${{ steps.build.outputs.digest }} | cut -d: -f2)
+          yq e -i '.service.image.tag = env(IMAGE_TAG)' helmless-chart/values.yaml
+          yq e -i '.job.image.tag = env(IMAGE_TAG)' helmless-chart/values.yaml
