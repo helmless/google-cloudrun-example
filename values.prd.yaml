@@ -1,0 +1,6 @@
+service:
+  name: my-service-prd
+  env:
+    SERVICE_VAR: "Wohoo, going to production!"
+job:
+  name: my-job-prd

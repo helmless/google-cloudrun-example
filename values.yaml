@@ -1,0 +1,19 @@
+global: 
+  project: helmless
+  region: europe-west1
+
+env: &env 
+  COLOR: "blue"
+
+service:
+  name: my-service
+  env:
+    <<: *env 
+    SERVICE_VAR: "Helmless is awesome!"
+
+job:
+  name: my-job
+  env:
+    <<: *env
+    COLOR: "red"
+    JOB_VAR: "Look ma, riding without a helm!"
