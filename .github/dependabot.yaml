@@ -12,7 +12,7 @@ updates:
 
   # Helm Chart dependencies
   - package-ecosystem: 'docker'
-    directory: '/helmless-chart/**'
+    directory: './helmless-chart'
     schedule:
       interval: 'weekly'
     open-pull-requests-limit: 10
