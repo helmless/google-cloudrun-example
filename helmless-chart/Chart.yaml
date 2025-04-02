@@ -6,10 +6,10 @@ version: "1.0.0"
 appVersion: "1.0.0"
 dependencies:
   - name: google-cloudrun-service
-    version: 1.0.0
+    version: 0.3.0
     repository: oci://ghcr.io/helmless
     alias: service
   - name: google-cloudrun-job
-    version: 1.0.0
+    version: 0.3.0
     repository: oci://ghcr.io/helmless
     alias: job

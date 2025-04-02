@@ -1,9 +1,9 @@
 dependencies:
 - name: google-cloudrun-service
   repository: oci://ghcr.io/helmless
-  version: 1.0.0
+  version: 0.3.0
 - name: google-cloudrun-job
   repository: oci://ghcr.io/helmless
-  version: 1.0.0
-digest: sha256:1d0652b4cc770548e56082d430a41612478c0c0250024cec2d9f1911dcab4948
-generated: "2025-03-28T19:28:27.060564+01:00"
+  version: 0.3.0
+digest: sha256:2631fdbf96cb8c6423466e44ea3dee149f3da0cea06fd48e328161783ea6a6c4
+generated: "2025-04-02T12:53:45.67287+01:00"
